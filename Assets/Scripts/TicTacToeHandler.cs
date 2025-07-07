@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -47,7 +48,10 @@ public class TicTacToeHandler : MonoBehaviour
         player1Text.color = Color.gray;
         player1Text.text = "Your Turn";
         isWonOrLost = false;
-        winningLines.ForEach(line => line.SetActive(false));
+        winningLines.ForEach(line => {
+            line.SetActive(false);
+            line.GetComponent<Image>().DOFillAmount(0f, 0f);
+        });
     }
     
     public void CheckWinner(){
@@ -73,7 +77,8 @@ public class TicTacToeHandler : MonoBehaviour
                 
                 isWonOrLost = true;
                 winningLines[i].GetComponent<Image>().sprite = blueLineSprite; 
-                winningLines[i].SetActive(true); 
+                winningLines[i].SetActive(true);
+                winningLines[i].GetComponent<Image>().DOFillAmount(1f, 1f);
                 return;
             }
             if (player2Moves.Contains(combo[0]) && player2Moves.Contains(combo[1]) && player2Moves.Contains(combo[2]))

@@ -37,7 +37,7 @@ public class TicTacToeBtnScript : MonoBehaviour, IPointerDownHandler
             TicTacToeHandler.instance.cellsHolder.transform.GetChild(index).transform.GetChild(0).gameObject.SetActive(true);
             TicTacToeHandler.instance.isPlayer1Turn = false;
             TicTacToeHandler.instance.isPlayer2Turn = true;
-            TicTacToeHandler.instance.player1Text.text = "Your Turn";
+            TicTacToeHandler.instance.player1Text.text = "Please Wait";
         }
         else 
         {
@@ -46,7 +46,7 @@ public class TicTacToeBtnScript : MonoBehaviour, IPointerDownHandler
             TicTacToeHandler.instance.cellsHolder.transform.GetChild(index).transform.GetChild(0).gameObject.SetActive(true);
             TicTacToeHandler.instance.isPlayer1Turn = true;
             TicTacToeHandler.instance.isPlayer2Turn = false;
-            TicTacToeHandler.instance.player1Text.text = "Please Wait";
+            TicTacToeHandler.instance.player1Text.text = "Your Turn";
         }
         TicTacToeHandler.instance.CheckWinner();
     }
