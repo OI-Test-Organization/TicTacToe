@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -34,7 +35,9 @@ public class TicTacToeBtnScript : MonoBehaviour, IPointerDownHandler
         {
             transform.GetChild(0).GetComponent<Image>().sprite = XSprite;
             TicTacToeHandler.instance.player1Moves.Add(index);
-            TicTacToeHandler.instance.cellsHolder.transform.GetChild(index).transform.GetChild(0).gameObject.SetActive(true);
+            var symbol = TicTacToeHandler.instance.cellsHolder.transform.GetChild(index).transform.GetChild(0);
+            symbol.gameObject.SetActive(true);
+            StartCoroutine(Shake(symbol));
             TicTacToeHandler.instance.isPlayer1Turn = false;
             TicTacToeHandler.instance.isPlayer2Turn = true;
             TicTacToeHandler.instance.player1Text.text = "Please Wait";
@@ -43,11 +46,31 @@ public class TicTacToeBtnScript : MonoBehaviour, IPointerDownHandler
         {
             transform.GetChild(0).GetComponent<Image>().sprite = OSprite;
             TicTacToeHandler.instance.player2Moves.Add(index);
-            TicTacToeHandler.instance.cellsHolder.transform.GetChild(index).transform.GetChild(0).gameObject.SetActive(true);
+            var symbol =  TicTacToeHandler.instance.cellsHolder.transform.GetChild(index).transform.GetChild(0);
+            symbol.gameObject.SetActive(true);
+            StartCoroutine(Shake(symbol));
             TicTacToeHandler.instance.isPlayer1Turn = true;
             TicTacToeHandler.instance.isPlayer2Turn = false;
             TicTacToeHandler.instance.player1Text.text = "Your Turn";
         }
         TicTacToeHandler.instance.CheckWinner();
+    }
+    public IEnumerator Shake(Transform target, float duration = 0.3f, float magnitude = 10f)
+    {
+        Vector3 originalPos = target.localPosition;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+
+            target.localPosition = originalPos + new Vector3(x, y, 0);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        target.localPosition = originalPos;
     }
 }

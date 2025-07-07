@@ -89,6 +89,7 @@ public class TicTacToeHandler : MonoBehaviour
                 isWonOrLost = true;
                 winningLines[i].GetComponent<Image>().sprite = redLineSprite; 
                 winningLines[i].SetActive(true); 
+                winningLines[i].GetComponent<Image>().DOFillAmount(1f, 1f);
                 return;
             }
         }
