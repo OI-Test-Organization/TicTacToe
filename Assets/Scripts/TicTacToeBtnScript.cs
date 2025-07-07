@@ -17,38 +17,37 @@ public class TicTacToeBtnScript : MonoBehaviour, IPointerDownHandler
     public void OnPointerDown(PointerEventData  pointerEventData){
         print($"isClicked: {isClicked}");
         if (isClicked) return;
+        if( TicTacToeHandler.instance.isWonOrLost == true) return;
         isClicked = true;
-        print($"TicTacToeHandler.Instance.isPlayer1Turn == true: {TicTacToeHandler.Instance.isPlayer1Turn == true}");
-        print($"TicTacToeHandler.Instance.isPlayer2Turn == false: {TicTacToeHandler.Instance.isPlayer2Turn == false}");
-        print($"!TicTacToeHandler.Instance.isGameOver: {!TicTacToeHandler.Instance.isGameOver}");
-        print($"!TicTacToeHandler.Instance.isDraw: {!TicTacToeHandler.Instance.isDraw}");
-        print($"!TicTacToeHandler.Instance.isPlayer1Win: {!TicTacToeHandler.Instance.isPlayer1Win}");
-        print($"!TicTacToeHandler.Instance.isPlayer2Win: {!TicTacToeHandler.Instance.isPlayer2Win}");
-        print($"TicTacToeHandler.Instance.player1Moves.Count < 5: {TicTacToeHandler.Instance.player1Moves.Count < 5}");
-        print($"TicTacToeHandler.Instance.player2Moves.Count < 5: {TicTacToeHandler.Instance.player2Moves.Count < 5}");
-        print($"!TicTacToeHandler.Instance.player1Moves.Contains(index): {!TicTacToeHandler.Instance.player1Moves.Contains(index)}");
-        print($"!TicTacToeHandler.Instance.player2Moves.Contains(index): {!TicTacToeHandler.Instance.player2Moves.Contains(index)}");
+        print($"TicTacToeHandler.Instance.isPlayer1Turn == true: {TicTacToeHandler.instance.isPlayer1Turn == true}");
+        print($"TicTacToeHandler.Instance.isPlayer2Turn == false: {TicTacToeHandler.instance.isPlayer2Turn == false}");
+        print($"!TicTacToeHandler.Instance.isGameOver: {!TicTacToeHandler.instance.isGameOver}");
+        print($"!TicTacToeHandler.Instance.isDraw: {!TicTacToeHandler.instance.isDraw}");
+        print($"!TicTacToeHandler.Instance.isPlayer1Win: {!TicTacToeHandler.instance.isPlayer1Win}");
+        print($"!TicTacToeHandler.Instance.isPlayer2Win: {!TicTacToeHandler.instance.isPlayer2Win}");
+        print($"TicTacToeHandler.Instance.player1Moves.Count < 5: {TicTacToeHandler.instance.player1Moves.Count < 5}");
+        print($"TicTacToeHandler.Instance.player2Moves.Count < 5: {TicTacToeHandler.instance.player2Moves.Count < 5}");
+        print($"!TicTacToeHandler.Instance.player1Moves.Contains(index): {!TicTacToeHandler.instance.player1Moves.Contains(index)}");
+        print($"!TicTacToeHandler.Instance.player2Moves.Contains(index): {!TicTacToeHandler.instance.player2Moves.Contains(index)}");
         print($"Index: {index}");
-        if (TicTacToeHandler.Instance.isPlayer1Turn)
+        if (TicTacToeHandler.instance.isPlayer1Turn)
         {
             transform.GetChild(0).GetComponent<Image>().sprite = XSprite;
-            TicTacToeHandler.Instance.player1Moves.Add(index);
-            TicTacToeHandler.Instance.cellsHolder.transform.GetChild(index).transform.GetChild(0).gameObject.SetActive(true);
-            TicTacToeHandler.Instance.isPlayer1Turn = false;
-            TicTacToeHandler.Instance.isPlayer2Turn = true;
-            TicTacToeHandler.Instance.player2Text.color = Color.green;
-            TicTacToeHandler.Instance.player1Text.color = Color.white;
+            TicTacToeHandler.instance.player1Moves.Add(index);
+            TicTacToeHandler.instance.cellsHolder.transform.GetChild(index).transform.GetChild(0).gameObject.SetActive(true);
+            TicTacToeHandler.instance.isPlayer1Turn = false;
+            TicTacToeHandler.instance.isPlayer2Turn = true;
+            TicTacToeHandler.instance.player1Text.text = "Your Turn";
         }
         else 
         {
             transform.GetChild(0).GetComponent<Image>().sprite = OSprite;
-            TicTacToeHandler.Instance.player2Moves.Add(index);
-            TicTacToeHandler.Instance.cellsHolder.transform.GetChild(index).transform.GetChild(0).gameObject.SetActive(true);
-            TicTacToeHandler.Instance.isPlayer1Turn = true;
-            TicTacToeHandler.Instance.isPlayer2Turn = false;
-            TicTacToeHandler.Instance.player1Text.color = Color.green;
-            TicTacToeHandler.Instance.player2Text.color = Color.white;
+            TicTacToeHandler.instance.player2Moves.Add(index);
+            TicTacToeHandler.instance.cellsHolder.transform.GetChild(index).transform.GetChild(0).gameObject.SetActive(true);
+            TicTacToeHandler.instance.isPlayer1Turn = true;
+            TicTacToeHandler.instance.isPlayer2Turn = false;
+            TicTacToeHandler.instance.player1Text.text = "Please Wait";
         }
-        TicTacToeHandler.Instance.CheckWinner();
+        TicTacToeHandler.instance.CheckWinner();
     }
 }

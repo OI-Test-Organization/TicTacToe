@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TicTacToeHandler : MonoBehaviour
 {
-    public static TicTacToeHandler Instance;
+    public static TicTacToeHandler instance;
     public bool isPlayer1Turn = false;
     public bool isPlayer2Turn = false;
     public bool isGameOver = false;
@@ -17,9 +17,12 @@ public class TicTacToeHandler : MonoBehaviour
     public GameObject cellsHolder;
     public GameObject xoSpriteObject;
     public Text player1Text, player2Text;
+    public bool isWonOrLost = false;
+    public List<GameObject> winningLines;
+    public Sprite redLineSprite,blueLineSprite;
 
     private void Start(){
-        Instance = this;
+        instance = this;
         ResetGame();
     }
     
@@ -29,7 +32,7 @@ public class TicTacToeHandler : MonoBehaviour
         }
         for(int i = 0; i < 9; i++){
             var newCell = Instantiate(xoSpriteObject.transform, cellsHolder.transform);
-            newCell.transform.GetChild(0).gameObject.SetActive(false);
+           // newCell.transform.GetChild(0).gameObject.SetActive(false);
             newCell.GetComponent<TicTacToeBtnScript>().index = i;
             newCell.gameObject.SetActive(true);
         }
@@ -41,13 +44,14 @@ public class TicTacToeHandler : MonoBehaviour
         isPlayer2Win = false;
         player1Moves.Clear();
         player2Moves.Clear();
-        player1Text.color = Color.green;
-        player2Text.color = Color.white;
+        player1Text.color = Color.gray;
+        player1Text.text = "Your Turn";
+        isWonOrLost = false;
+        winningLines.ForEach(line => line.SetActive(false));
     }
     
     public void CheckWinner(){
-        int[][] winningCombinations = new int[][]
-        {
+        var winningCombinations = new int[][] {
             new int[] {0, 1, 2},
             new int[] {3, 4, 5},
             new int[] {6, 7, 8},
@@ -58,39 +62,38 @@ public class TicTacToeHandler : MonoBehaviour
             new int[] {2, 4, 6}
         };
 
-        foreach (var combination in winningCombinations)
+        for (var i = 0; i < winningCombinations.Length; i++)
         {
-            if (player1Moves.Contains(combination[0]) && player1Moves.Contains(combination[1]) && player1Moves.Contains(combination[2]))
+            var combo = winningCombinations[i];
+            if (player1Moves.Contains(combo[0]) && player1Moves.Contains(combo[1]) && player1Moves.Contains(combo[2]))
             {
-                isPlayer2Win = true;
-                Debug.Log("Player 1 Wins!");
-                Invoke(nameof(ResetGame), 3f);
-                print("Game Reset Successfully!");
-                // ResetGame();
+                isPlayer1Win = true;
+                player1Text.text = "You Won!";
+                player1Text.color = Color.blue;
+                
+                isWonOrLost = true;
+                winningLines[i].GetComponent<Image>().sprite = blueLineSprite; 
+                winningLines[i].SetActive(true); 
                 return;
             }
-            if (player2Moves.Contains(combination[0]) && player2Moves.Contains(combination[1]) && player2Moves.Contains(combination[2]))
+            if (player2Moves.Contains(combo[0]) && player2Moves.Contains(combo[1]) && player2Moves.Contains(combo[2]))
             {
-                Debug.Log("Player 2 Wins!");
                 isPlayer2Win = true;
-                Invoke(nameof(ResetGame), 3f);
-                // Invoke(nameof(() => { 
-                //     Debug.Log("Resetting the game..."); 
-                //     ResetGame(); 
-                // }), 3f);
-                print("Game Reset Successfully!!");
-                // ResetGame();
+                player1Text.text = "You Lost!";
+                player1Text.color = Color.red;
+                isWonOrLost = true;
+                winningLines[i].GetComponent<Image>().sprite = redLineSprite; 
+                winningLines[i].SetActive(true); 
                 return;
             }
         }
 
         if (player1Moves.Count + player2Moves.Count == 9)
         {
-            Debug.Log("It's a Draw!");
+            player1Text.text = "DRAW!";
             isDraw = true;
-            Invoke(nameof(ResetGame), 3f);
-            print("Game Reset Successfully!!!");
-            // ResetGame();
+            isWonOrLost = true;
         }
     }
+
 }
